@@ -3,6 +3,7 @@ import pvrhino
 import json
 from pvrecorder import PvRecorder
 from datetime import datetime
+from assistant.fixyou import FixYou
 
 
 class Assistant:
@@ -29,6 +30,8 @@ class Assistant:
         self.recorder = PvRecorder(
             device_index=1,
             frame_length=self.porcupine.frame_length)
+        
+        self.fixyou = FixYou()
 
     def active_listening(self):
         try:
@@ -40,6 +43,7 @@ class Assistant:
                     inference = self.rhino.get_inference()
                     if inference.is_understood:
                         print(inference.intent)
+                        self.fixyou.toggle(inference.intent)
                     else:
                         print("I don't understand")
                     # After we process the command we break out
